@@ -20,7 +20,7 @@ Welcome to **Bloggie** - a sleek and modern blog app designed with the latest An
 
 ## Screenshots
 
-![Home Screen](screenshots/home.png)
+![Home Screen](Screenshot_20240709_140707.png)
 *Home Screen showing the latest blog posts.*
 
 ![Favorite Posts](screenshots/favorites.png)
