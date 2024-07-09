@@ -80,7 +80,7 @@ fun PostScreen(controller: NavController, viewModel: PostListViewModel = hiltVie
                     (state as? PostState.Success)?.let {
                         items(it.response) { item ->
                             Spacer(modifier = Modifier.padding(2.dp))
-                            PostClick(item = item, !favoriteIds.contains(item.id)) {
+                            PostClick(item = item, favoriteIds.contains(item.id)) {
                                 viewModel.bookmark(it)
                             }
                             HorizontalDivider()
@@ -93,7 +93,7 @@ fun PostScreen(controller: NavController, viewModel: PostListViewModel = hiltVie
 }
 
 @Composable
-private fun PostClick(item: Post, isNotBookmarked: Boolean = true, onClick: (Post) -> Unit) {
+private fun PostClick(item: Post, isBookmarked: Boolean = false, onClick: (Post) -> Unit) {
 
     ListItem(
         headlineContent = { Text(item.title ?: "") },
@@ -101,8 +101,7 @@ private fun PostClick(item: Post, isNotBookmarked: Boolean = true, onClick: (Pos
         trailingContent = {
             IconButton(
                 onClick = { onClick(item) },
-                colors = IconButtonDefaults.filledIconButtonColors(),
-                enabled = isNotBookmarked
+                colors =  if (isBookmarked) IconButtonDefaults.filledIconButtonColors() else IconButtonDefaults.outlinedIconButtonColors(),
             ) {
                 Icon(
                     Icons.Filled.Favorite,
