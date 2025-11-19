@@ -22,6 +22,8 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -37,6 +39,7 @@ import com.example.bloggie.model.Post
 fun PostScreen(controller: NavController, viewModel: PostListViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val favoriteIds by viewModel.favoriteIds.collectAsStateWithLifecycle()
+    val isRefreshing = state is PostState.Loading && (state as? PostState.Success)?.response?.isNotEmpty() == true // Simplified logic, ideally VM exposes isRefreshing
 
     Scaffold(modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -71,14 +74,18 @@ fun PostScreen(controller: NavController, viewModel: PostListViewModel = hiltVie
             ) {
                 CircularProgressIndicator()
             }
-            is PostState.Success ->
-                LazyColumn(
-                    modifier = Modifier
-                        .padding(paddingValues)
-                        .fillMaxSize()
+            is PostState.Success -> {
+                val posts = (state as PostState.Success).response
+                PullToRefreshBox(
+                    isRefreshing = isRefreshing,
+                    onRefresh = { viewModel.fetchAll() }
                 ) {
-                    (state as? PostState.Success)?.let {
-                        items(it.response) { item ->
+                    LazyColumn(
+                        modifier = Modifier
+                            .padding(paddingValues)
+                            .fillMaxSize()
+                    ) {
+                        items(posts) { item ->
                             Spacer(modifier = Modifier.padding(2.dp))
                             PostClick(item = item, favoriteIds.contains(item.id)) {
                                 viewModel.bookmark(it)
@@ -87,6 +94,7 @@ fun PostScreen(controller: NavController, viewModel: PostListViewModel = hiltVie
                         }
                     }
                 }
+            }
         }
 
     }

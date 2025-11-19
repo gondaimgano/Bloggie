@@ -15,6 +15,10 @@ serialization = "1.6.3"
 hiltAndroid = "2.48"
 retrofitVersion = "2.11.0"
 coilVersion = "2.6.0"
+material3Version = "1.3.0"
+mockito = "5.11.0"
+mockitoKotlin = "5.2.1"
+coroutinesTest = "1.7.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -33,7 +37,7 @@ androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3Version" }
 navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "composeNavigation" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization"}
 hilt-navigation-compose = {module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltComposeNavigation"}
@@ -43,6 +47,9 @@ retrofit-http = { module = "com.squareup.retrofit2:retrofit", version.ref = "ret
 retrofit-gson = {module = "com.google.code.gson:gson", version.ref = "retrofitVersion"}
 retrofit-gson-converter = {module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofitVersion"}
 coil-image = {module = "io.coil-kt:coil-compose", version.ref = "coilVersion"}
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
+mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockitoKotlin" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutinesTest" }
 
 
 [plugins]

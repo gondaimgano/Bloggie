@@ -6,8 +6,9 @@ import com.example.bloggie.database.Favorite
 import com.example.bloggie.model.Post
 import com.example.bloggie.use_case.FetchUseCase
 import com.example.bloggie.use_case.SaveUseCase
+import com.example.bloggie.di.IoDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -21,7 +22,8 @@ class PostListViewModel
     constructor(
     private val fetchListOfPost: FetchUseCase<List<Post>>,
     private val fetchFavorites: FetchUseCase<List<Favorite>>,
-    private val saveToFavorites: SaveUseCase
+    private val saveToFavorites: SaveUseCase,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ): ViewModel() {
 
    private var _state = MutableStateFlow<PostState>(PostState.Loading)
@@ -36,7 +38,7 @@ class PostListViewModel
 
     fun bookmark(p:Post){
         viewModelScope.launch {
-            withContext(Dispatchers.IO+viewModelScope.coroutineContext){
+            withContext(ioDispatcher){
               if(saveToFavorites(p)) {
                   _favoritesIds.update { it + (p.id ?: 0) }
               }
@@ -49,7 +51,7 @@ class PostListViewModel
             with(_state) {
                 emit(PostState.Loading)
                  try {
-                     val (response,favorites) = withContext(Dispatchers.IO+viewModelScope.coroutineContext) {
+                     val (response,favorites) = withContext(ioDispatcher) {
                          fetchListOfPost()  to fetchFavorites()
                      }
 
